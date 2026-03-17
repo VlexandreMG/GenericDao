@@ -1,0 +1,5 @@
+-- Active: 1772520408226@@127.0.0.1@3306@generic
+CREATE TABLE Olona (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(50)
+);

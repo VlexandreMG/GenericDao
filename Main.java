@@ -9,7 +9,7 @@ public class Main {
         test.setNom("shee");
         
         try {
-            GenericDao.save(test);
+            GenericDao.delete(test);
         } catch (Exception e) {
             // TODO: handle exceptiont
             throw e;

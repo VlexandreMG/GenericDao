@@ -47,14 +47,29 @@ public class GenericDao {
         String nomCLasse = classe.getSimpleName();
         Field[] listField = classe.getDeclaredFields();
 
+        String idColumn = "";
+        Object idValue = null;
+
         for (int i = 0 ; i < listField.length ; i++) {
             listField[i].setAccessible(true);
 
-            if((listField[i].get(o)) == o.getClass.get)
+            if((listField[i].getName().equalsIgnoreCase("id"))) {
+                idColumn = listField[i].getName();
+                idValue = listField[i].get(o);
+                break;
+            }
+        }
+
+        if (idValue != null) {
+            String sql = "DELETE FROM "+ nomCLasse +"WHERE"+ idColumn +"="+idValue;
+            System.out.println("Requête génére.");
+            Connection conn = ConnectionBD.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.execute();
+        } else {
+            throw new Exception("Aucun idée correspondant");
         }
         
-        "DELECT FROM "+ nomCLasse + 
-
 
 
     }

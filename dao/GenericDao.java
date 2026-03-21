@@ -41,4 +41,21 @@ public class GenericDao {
             throw e;
         }        
     }
+
+    public static void delete(Object o) throws Exception {
+        Class<?> classe = o.getClass();
+        String nomCLasse = classe.getSimpleName();
+        Field[] listField = classe.getDeclaredFields();
+
+        for (int i = 0 ; i < listField.length ; i++) {
+            listField[i].setAccessible(true);
+
+            if((listField[i].get(o)) == o.getClass.get)
+        }
+        
+        "DELECT FROM "+ nomCLasse + 
+
+
+
+    }
 }

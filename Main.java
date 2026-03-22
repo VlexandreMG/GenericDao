@@ -7,9 +7,13 @@ public class Main {
         Olona test = new Olona();
         test.setId(0);
         test.setNom("shee");
+
+        Olona ahh = new Olona();
+        ahh.setId(2);
+        ahh.setNom("shee");
         
         try {
-            GenericDao.delete(test);
+            GenericDao.delete(ahh);
         } catch (Exception e) {
             // TODO: handle exceptiont
             throw e;

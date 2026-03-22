@@ -61,16 +61,15 @@ public class GenericDao {
         }
 
         if (idValue != null) {
-            String sql = "DELETE FROM "+ nomCLasse +"WHERE"+ idColumn +"="+idValue;
-            System.out.println("Requête génére.");
+            String sql = "DELETE FROM "+ nomCLasse +" WHERE "+ idColumn +" = ?";
+            System.out.println("Requête générée.");
             Connection conn = ConnectionBD.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setObject(1, idValue);
             ps.execute();
         } else {
             throw new Exception("Aucun idée correspondant");
         }
-        
-
 
     }
 }

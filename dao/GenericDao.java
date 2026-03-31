@@ -10,7 +10,7 @@ import java.util.List;
 import db.ConnectionBD;
 import model.Mapping;
 
-public class GenericDao {
+public class GenericDao implements InterfaceDao {
     Mapping mapping;
 
     public Mapping getMapping() {
@@ -25,6 +25,7 @@ public class GenericDao {
         this.mapping = new Mapping();
     }
 
+    @Override
     public void save(Object o) throws Exception {
         // Connection conn = ConnectionBD.getConnection();
         // // String sql = "INSERT INTO Olona (nom) VALUES (?)";
@@ -67,36 +68,41 @@ public class GenericDao {
         }
     }
 
-    // public void delete(Object o) throws Exception {
-    // Class<?> classe = o.getClass();
-    // String nomCLasse = classe.getSimpleName();
-    // Field[] listField = classe.getDeclaredFields();
+    @Override
+    public void delete(Object o) throws Exception {
+        
+        // Class<?> classe = o.getClass();
+        // String nomCLasse = classe.getSimpleName();
+        // Field[] listField = classe.getDeclaredFields();
 
-    // String idColumn = "";
-    // Object idValue = null;
+        Mapping mapping = this.getMapping();
 
-    // for (int i = 0; i < listField.length; i++) {
-    // listField[i].setAccessible(true);
+        Mapping map = mapping.recupObject(o);
+        String nomCLasse = map.getTableName();
+        String[][] tableColumn = map.getTableColumn();
 
-    // if ((listField[i].getName().equalsIgnoreCase("id"))) {
-    // idColumn = listField[i].getName();
-    // idValue = listField[i].get(o);
-    // break;
-    // }
-    // }
+        String idColumn = "";
+        Object idValue = null;
 
-    // if (idValue != null) {
-    // String sql = "DELETE FROM " + nomCLasse + " WHERE " + idColumn + " = ?";
-    // System.out.println("Requête générée.");
-    // Connection conn = ConnectionBD.getConnection();
-    // PreparedStatement ps = conn.prepareStatement(sql);
-    // ps.setObject(1, idValue);
-    // ps.execute();
-    // } else {
-    // throw new Exception("Aucun idée correspondant");
-    // }
+        for (int i = 0; i < tableColumn.length; i++) {
+            if ((tableColumn[i][0].equalsIgnoreCase("id"))) {
+                idColumn = tableColumn[i][0];
+                idValue = tableColumn[i][1];
+                break;
+            }
+        }
 
-    // }
+        if (idValue != null) {
+            String sql = "DELETE FROM " + nomCLasse + " WHERE " + idColumn + " = ?";
+            System.out.println("Requête générée.");
+            Connection conn = ConnectionBD.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setObject(1, idValue);
+            ps.execute();
+        } else {
+            throw new Exception("Aucun idée correspondant");
+        }
+    }
 
     // public void update(Object o) throws Exception {
     // Class<?> classe = o.getClass();

@@ -8,8 +8,10 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import db.ConnectionBD;
+import model.Mapping;
 
 public class GenericDao {
+    Mapping mapping;
 
     public GenericDao() {
     }
@@ -19,18 +21,24 @@ public class GenericDao {
         // // String sql = "INSERT INTO Olona (nom) VALUES (?)";
         // PreparedStatement ps = conn.prepareStatement(sql);
 
-        Class<?> classe = o.getClass();
-        String classeNom = classe.getSimpleName();
-        Field[] attributs = classe.getDeclaredFields();
+        // Class<?> classe = o.getClass();
+        // String classeNom = classe.getSimpleName();
+        // Field[] attributs = classe.getDeclaredFields();
 
-        String query = "INSERT INTO " + classeNom + "(";
+        Mapping mapping = new Mapping();
+
+        Mapping map = mapping.recupObject(o);
+        String tableNom = map.getTableName();
+        String[][] tableColumn = map.getTableColumn();
+
+        String query = "INSERT INTO " + tableNom + "(";
         int i = 0;
         int j = 0;
-        for (i = 0; i < attributs.length - 1; i++) {
-            query += attributs[i].getName() + ", ";
+        for (i = 0; i < tableColumn.length - 1; i++) {
+            query += tableColumn[i][0] + ", ";
         }
-        query += attributs[i].getName() + ") VALUES (";
-        for (j = 0; j < attributs.length - 1; j++) {
+        query += tableColumn[i][0] + ") VALUES (";
+        for (j = 0; j < tableColumn.length - 1; j++) {
             query += "?, ";
         }
         query += "?)";
@@ -39,9 +47,9 @@ public class GenericDao {
             Connection conn = ConnectionBD.getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
 
-            for (int k = 0; k < attributs.length; k++) {
-                attributs[k].setAccessible(true);
-                ps.setObject(k + 1, attributs[k].get(o));
+            for (int k = 0; k < tableColumn.length; k++) {
+                // tableColumn[k][1].setAccessible(true);
+                ps.setObject(k + 1, tableColumn[k][1]);
             }
 
             ps.executeUpdate();

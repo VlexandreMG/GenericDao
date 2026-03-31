@@ -15,7 +15,7 @@ public class Main {
         ahh.setNom("shee");
         
         try {
-            genericDao.save(ahh);
+            // genericDao.save(ahh);
         } catch (Exception e) {
             // TODO: handle exceptiont
             throw e;

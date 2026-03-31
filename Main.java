@@ -4,6 +4,8 @@ import dao.GenericDao;
 public class Main {
     
     public static void main(String[] args) throws Exception {
+        GenericDao genericDao = new GenericDao();
+
         Olona test = new Olona();
         test.setId(0);
         test.setNom("shee");
@@ -13,7 +15,7 @@ public class Main {
         ahh.setNom("shee");
         
         try {
-            GenericDao.delete(ahh);
+            genericDao.save(ahh);
         } catch (Exception e) {
             // TODO: handle exceptiont
             throw e;

@@ -13,7 +13,16 @@ import model.Mapping;
 public class GenericDao {
     Mapping mapping;
 
+    public Mapping getMapping() {
+        return mapping;
+    }
+
+    public void setMapping(Mapping mapping) {
+        this.mapping = mapping;
+    }
+
     public GenericDao() {
+        this.mapping = new Mapping();
     }
 
     public void save(Object o) throws Exception {
@@ -25,7 +34,7 @@ public class GenericDao {
         // String classeNom = classe.getSimpleName();
         // Field[] attributs = classe.getDeclaredFields();
 
-        Mapping mapping = new Mapping();
+        Mapping mapping = this.getMapping();
 
         Mapping map = mapping.recupObject(o);
         String tableNom = map.getTableName();
@@ -58,143 +67,142 @@ public class GenericDao {
         }
     }
 
-    
+    // public void delete(Object o) throws Exception {
+    // Class<?> classe = o.getClass();
+    // String nomCLasse = classe.getSimpleName();
+    // Field[] listField = classe.getDeclaredFields();
 
-    public void delete(Object o) throws Exception {
-        Class<?> classe = o.getClass();
-        String nomCLasse = classe.getSimpleName();
-        Field[] listField = classe.getDeclaredFields();
+    // String idColumn = "";
+    // Object idValue = null;
 
-        String idColumn = "";
-        Object idValue = null;
+    // for (int i = 0; i < listField.length; i++) {
+    // listField[i].setAccessible(true);
 
-        for (int i = 0; i < listField.length; i++) {
-            listField[i].setAccessible(true);
+    // if ((listField[i].getName().equalsIgnoreCase("id"))) {
+    // idColumn = listField[i].getName();
+    // idValue = listField[i].get(o);
+    // break;
+    // }
+    // }
 
-            if ((listField[i].getName().equalsIgnoreCase("id"))) {
-                idColumn = listField[i].getName();
-                idValue = listField[i].get(o);
-                break;
-            }
-        }
+    // if (idValue != null) {
+    // String sql = "DELETE FROM " + nomCLasse + " WHERE " + idColumn + " = ?";
+    // System.out.println("Requête générée.");
+    // Connection conn = ConnectionBD.getConnection();
+    // PreparedStatement ps = conn.prepareStatement(sql);
+    // ps.setObject(1, idValue);
+    // ps.execute();
+    // } else {
+    // throw new Exception("Aucun idée correspondant");
+    // }
 
-        if (idValue != null) {
-            String sql = "DELETE FROM " + nomCLasse + " WHERE " + idColumn + " = ?";
-            System.out.println("Requête générée.");
-            Connection conn = ConnectionBD.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setObject(1, idValue);
-            ps.execute();
-        } else {
-            throw new Exception("Aucun idée correspondant");
-        }
+    // }
 
-    }
+    // public void update(Object o) throws Exception {
+    // Class<?> classe = o.getClass();
+    // String nomClasse = classe.getSimpleName();
+    // Field[] listField = classe.getDeclaredFields();
 
-    public void update(Object o) throws Exception {
-        Class<?> classe = o.getClass();
-        String nomClasse = classe.getSimpleName();
-        Field[] listField = classe.getDeclaredFields();
+    // String idColumn = "";
+    // Object idValue = null;
 
-        String idColumn = "";
-        Object idValue = null;
+    // String sql = "UPDATE " + nomClasse + " SET ";
+    // boolean first = true;
 
-        String sql = "UPDATE " + nomClasse + " SET ";
-        boolean first = true;
+    // for (int i = 0; i < listField.length; i++) {
+    // listField[i].setAccessible(true);
+    // if (listField[i].getName().equalsIgnoreCase("id")) {
+    // idColumn = listField[i].getName();
+    // idValue = listField[i].get(o);
+    // } else {
+    // if (!first) {
+    // sql += ", ";
+    // }
+    // sql += listField[i].getName() + " = ?";
+    // first = false;
+    // }
+    // }
 
-        for (int i = 0; i < listField.length; i++) {
-            listField[i].setAccessible(true);
-            if (listField[i].getName().equalsIgnoreCase("id")) {
-                idColumn = listField[i].getName();
-                idValue = listField[i].get(o);
-            } else {
-                if (!first) {
-                    sql += ", ";
-                }
-                sql += listField[i].getName() + " = ?";
-                first = false;
-            }
-        }
+    // if (idValue == null) {
+    // throw new Exception("Aucun id correspondant");
+    // }
 
-        if (idValue == null) {
-            throw new Exception("Aucun id correspondant");
-        }
+    // sql += " WHERE " + idColumn + " = ?";
 
-        sql += " WHERE " + idColumn + " = ?";
+    // Connection conn = ConnectionBD.getConnection();
+    // PreparedStatement ps = conn.prepareStatement(sql);
 
-        Connection conn = ConnectionBD.getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql);
+    // int index = 1;
+    // for (int i = 0; i < listField.length; i++) {
+    // listField[i].setAccessible(true);
+    // if (!listField[i].getName().equalsIgnoreCase("id")) {
+    // ps.setObject(index, listField[i].get(o));
+    // index++;
+    // }
+    // }
+    // ps.setObject(index, idValue);
+    // ps.executeUpdate();
+    // }
 
-        int index = 1;
-        for (int i = 0; i < listField.length; i++) {
-            listField[i].setAccessible(true);
-            if (!listField[i].getName().equalsIgnoreCase("id")) {
-                ps.setObject(index, listField[i].get(o));
-                index++;
-            }
-        }
-        ps.setObject(index, idValue);
-        ps.executeUpdate();
-    }
+    // public Object findById(Class<?> classe, Object id) throws Exception {
+    // String nomClasse = classe.getSimpleName();
+    // Field[] listField = classe.getDeclaredFields();
 
-    public Object findById(Class<?> classe, Object id) throws Exception {
-        String nomClasse = classe.getSimpleName();
-        Field[] listField = classe.getDeclaredFields();
+    // String idColumn = "";
+    // for (int i = 0; i < listField.length; i++) {
+    // if (listField[i].getName().equalsIgnoreCase("id")) {
+    // idColumn = listField[i].getName();
+    // break;
+    // }
+    // }
 
-        String idColumn = "";
-        for (int i = 0; i < listField.length; i++) {
-            if (listField[i].getName().equalsIgnoreCase("id")) {
-                idColumn = listField[i].getName();
-                break;
-            }
-        }
+    // if (idColumn.equals("")) {
+    // throw new Exception("Aucun id correspondant");
+    // }
 
-        if (idColumn.equals("")) {
-            throw new Exception("Aucun id correspondant");
-        }
+    // String sql = "SELECT * FROM " + nomClasse + " WHERE " + idColumn + " = ?";
+    // Connection conn = ConnectionBD.getConnection();
+    // PreparedStatement ps = conn.prepareStatement(sql);
+    // ps.setObject(1, id);
 
-        String sql = "SELECT * FROM " + nomClasse + " WHERE " + idColumn + " = ?";
-        Connection conn = ConnectionBD.getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setObject(1, id);
+    // ResultSet rs = ps.executeQuery();
+    // if (rs.next()) {
+    // Object obj = classe.getDeclaredConstructor().newInstance();
 
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            Object obj = classe.getDeclaredConstructor().newInstance();
+    // for (int i = 0; i < listField.length; i++) {
+    // listField[i].setAccessible(true);
+    // Object value = rs.getObject(listField[i].getName());
+    // listField[i].set(obj, value);
+    // }
+    // return obj;
+    // }
 
-            for (int i = 0; i < listField.length; i++) {
-                listField[i].setAccessible(true);
-                Object value = rs.getObject(listField[i].getName());
-                listField[i].set(obj, value);
-            }
-            return obj;
-        }
+    // return null;
+    // }
 
-        return null;
-    }
+    // public List<Object> getAll(Class<?> classe) throws Exception {
+    // String nomClasse = classe.getSimpleName();
+    // Field[] listField = classe.getDeclaredFields();
 
-    public List<Object> getAll(Class<?> classe) throws Exception {
-        String nomClasse = classe.getSimpleName();
-        Field[] listField = classe.getDeclaredFields();
+    // String sql = "SELECT * FROM " + nomClasse;
+    // Connection conn = ConnectionBD.getConnection();
+    // PreparedStatement ps = conn.prepareStatement(sql);
+    // ResultSet rs = ps.executeQuery();
 
-        String sql = "SELECT * FROM " + nomClasse;
-        Connection conn = ConnectionBD.getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
+    // List<Object> list = new ArrayList<>();
 
-        List<Object> list = new ArrayList<>();
+    // while (rs.next()) {
+    // Object obj = classe.getDeclaredConstructor().newInstance();
 
-        while (rs.next()) {
-            Object obj = classe.getDeclaredConstructor().newInstance();
+    // for (int i = 0; i < listField.length; i++) {
+    // listField[i].setAccessible(true);
+    // Object value = rs.getObject(listField[i].getName());
+    // listField[i].set(obj, value);
+    // }
+    // list.add(obj);
+    // }
 
-            for (int i = 0; i < listField.length; i++) {
-                listField[i].setAccessible(true);
-                Object value = rs.getObject(listField[i].getName());
-                listField[i].set(obj, value);
-            }
-            list.add(obj);
-        }
+    // return list;
+    // }
 
-        return list;
-    }
 }
